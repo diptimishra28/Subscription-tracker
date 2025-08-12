@@ -1,5 +1,5 @@
 //Middleware is a function that runs in between the request and the response.
-const errorMiddleware = (error, req, res, next) => { //This is an Express error-handling middleware — it must have 4 arguments: error, req, res, next.
+const errorMiddleware = (err, req, res, next) => { //This is an Express error-handling middleware — it must have 4 arguments: error, req, res, next.
     try {
         let error = { ...err};
 
