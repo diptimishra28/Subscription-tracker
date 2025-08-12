@@ -13,7 +13,8 @@ export const signUp = async (req, res, next) => {
 
     try{
         //login to create a new user
-        const {name, email,password} = req.body;
+        const {name, email,password, age} = req.body;
+        console.log(name);
 
         //check if a user already exxists
         const existingUser = await User.findOne({email});
@@ -28,11 +29,11 @@ export const signUp = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         
-        const newUsers = await User.create([{name, email, password: hashedPassword}], {session});
+        const newUsers = await User.create([{name, email, password: hashedPassword, age}], {session});
 
         const token = jwt.sign({user: newUsers[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN});
 
-        await session.ccommitTransaction();
+        await session.commitTransaction();
         session.endSession();
 
         res.status(201).json({
@@ -40,7 +41,7 @@ export const signUp = async (req, res, next) => {
             mesage: 'user created successfully',
             data: {
                 token,
-                user: newUser[0],
+                user: newUsers[0],
             }
         })
 
@@ -87,4 +88,4 @@ export const signIn = async (req, res, next) => {
     }
 }
 
-export const signOut = async (req, res, next) => {}
+//export const signOut = async (req, res, next) => {}

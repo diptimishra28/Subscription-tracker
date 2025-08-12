@@ -15,7 +15,7 @@ const authorize = async (req, res, next) => {
 
         const decoded = jwt.verify(token, JWT_SECRET);
 
-        const user = await user.findById(decoded.userId);
+        const user = await User.findById(decoded.userId);
 
         if(!user) return req.status(401).json({message: 'Unauthorized'});
 
