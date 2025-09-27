@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json()); //this allows app to handle json data sent in requests or api calls
 app.use(express.urlencoded({extended: false})); //this helps to process the form data sent via html forms in a  simple format
 app.use(cookieParser());
-app.use(arcjetMiddleware);
+app.use(arcjetMiddleware); //To block bots or rate-limited IPs before they hit any route.
 
 //api/v1/auth/sign-up
 //app.use('/api/v1/auth', authRouter);
@@ -31,7 +31,7 @@ app.use('/api/v1/subscriptions', subscriptionRouter);
 app.use('/api/v1/workflows', workflowRouter);
 
 
-app.use(errorMiddleware)
+app.use(errorMiddleware) //This is a central “catcher” for every error. //It bubbles up to errorMiddleware, which sends a clean JSON error response.
 
 app.get('/', (req, res) => {
     res.send('welcome to the Subscription Tracker API!');

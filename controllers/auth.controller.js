@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import {JWT_SECRET, JWT_EXPIRES_IN} from '../config/env.js';
 
+
+//create a new user
 export const signUp = async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -29,8 +31,10 @@ export const signUp = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         
+        //Creates the user document inside the database transaction.
         const newUsers = await User.create([{name, email, password: hashedPassword, age}], {session});
 
+        //Client har future request me ye token bhejta hai, server check karke user ko allow karta hai.
         const token = jwt.sign({user: newUsers[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN});
 
         await session.commitTransaction();
