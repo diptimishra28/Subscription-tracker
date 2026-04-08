@@ -35,17 +35,19 @@ export const signUp = async (req, res, next) => {
         const newUsers = await User.create([{name, email, password: hashedPassword, age}], {session});
 
         //Client har future request me ye token bhejta hai, server check karke user ko allow karta hai.
-        const token = jwt.sign({user: newUsers[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN});
+        const token = jwt.sign({userId: newUsers[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN});
 
         await session.commitTransaction();
         session.endSession();
 
+        const { password: _, ...userWithoutPassword } = newUsers[0].toObject();
+
         res.status(201).json({
             success: true,
-            mesage: 'user created successfully',
+            message: 'user created successfully',
             data: {
                 token,
-                user: newUsers[0],
+                user: userWithoutPassword,
             }
         })
 
@@ -79,12 +81,14 @@ export const signIn = async (req, res, next) => {
 
         const token = jwt.sign({userId: user._id}, JWT_SECRET,  {expiresIn: JWT_EXPIRES_IN});
 
+        const { password: _, ...userWithoutPassword } = user.toObject();
+
         res.status(200).json({
             success: true,
             message: 'user signed in successfully',
             data: {
                 token,
-                user,
+                user: userWithoutPassword,
             }
         });
     } catch (error){
