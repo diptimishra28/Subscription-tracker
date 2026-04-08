@@ -1,48 +1,37 @@
 import { Router } from 'express';
 
-import authorize from '../middlewares/auth.middleware.js'
+import authorize from '../middlewares/auth.middleware.js';
 import {
   createSubscription,
   getUserSubscriptions,
-} from '../controllers/subscription.controller.js'
+  getAllSubscriptions,
+  getSubscription,
+  updateSubscription,
+  deleteSubscription,
+  cancelSubscription,
+} from '../controllers/subscription.controller.js';
 
 const subscriptionRouter = Router();
 
-subscriptionRouter.get('/', (req, res) => { 
-    res.send('GET all subscriptions');
-});
+// GET /api/v1/subscriptions — get all subscriptions (admin use)
+subscriptionRouter.get('/', authorize, getAllSubscriptions);
 
-subscriptionRouter.get('/:id', (req, res) => { 
-    res.send('GET subscriptions details');
-});
+// GET /api/v1/subscriptions/:id — get one subscription by ID
+subscriptionRouter.get('/:id', authorize, getSubscription);
 
-subscriptionRouter.post('/', (req, res) => { 
-    res.send('CREATE subscriptions');
-});
+// POST /api/v1/subscriptions — create a new subscription
+subscriptionRouter.post('/', authorize, createSubscription);
 
-subscriptionRouter.put('/:id', (req, res) => { 
-    res.send('UPDATE subscriptions');
-});
+// PUT /api/v1/subscriptions/:id — update a subscription
+subscriptionRouter.put('/:id', authorize, updateSubscription);
 
-subscriptionRouter.delete('/:id', (req, res) => { 
-    res.send('DELETE subscriptions');
-});
+// DELETE /api/v1/subscriptions/:id — delete a subscription
+subscriptionRouter.delete('/:id', authorize, deleteSubscription);
 
-subscriptionRouter.get('/user/:id', (req, res) => { 
-    res.send('GET all user subscriptions');
-});
+// GET /api/v1/subscriptions/user/:id — get all subscriptions for a specific user
+subscriptionRouter.get('/user/:id', authorize, getUserSubscriptions);
 
-subscriptionRouter.put('/:id/cancel', (req, res) => { 
-    res.send('CANCEL subscriptions');
-});
-
-subscriptionRouter.get('/upcoming-renewals', (req, res) => { 
-    res.send('GET upcoming renewals');
-});
+// PUT /api/v1/subscriptions/:id/cancel — cancel a subscription
+subscriptionRouter.put('/:id/cancel', authorize, cancelSubscription);
 
 export default subscriptionRouter;
-
-
-
-
-
