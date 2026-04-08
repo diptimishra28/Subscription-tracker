@@ -17,7 +17,7 @@ const authorize = async (req, res, next) => {
 
         //find the user in db
         const user = await User.findById(decoded.userId);
-        if(!user) return req.status(401).json({message: 'Unauthorized'});
+        if(!user) return res.status(401).json({message: 'Unauthorized'});
 
         req.user = user;
 
