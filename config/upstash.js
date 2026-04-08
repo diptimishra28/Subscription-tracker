@@ -1,15 +1,6 @@
-import nodemailer from 'nodemailer';
+import { Client } from '@upstash/workflow';
+import { QSTASH_TOKEN } from './env.js';
 
-import { EMAIL_PASSWORD } from './env.js'
-
-export const accountEmail = 'javascriptmastery00@gmail.com';
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: accountEmail,
-    pass: EMAIL_PASSWORD
-  }
-})
-
-export default transporter;
+export const workflowClient = new Client({
+  token: QSTASH_TOKEN,
+});
