@@ -23,7 +23,7 @@ const errorMiddleware = (err, req, res, next) => { //This is an Express error-ha
 
         //Mongoose validation error
         if (err.name === 'ValidationError'){
-            const message = Object.values(err.errors).map(val => val.messsage)
+            const message = Object.values(err.errors).map(val => val.message)
             error = new Error(message);
             error.statusCode = 400;
         }
