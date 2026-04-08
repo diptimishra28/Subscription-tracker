@@ -11,7 +11,7 @@ const userRouter = Router();
 //userRouter.get('/', (req, res) => res.send({title: 'GET all users'}));
 userRouter.get('/', getUsers);
 
-userRouter.get('/:id', authorize, getUsers);
+userRouter.get('/:id', authorize, getUser);
 
 userRouter.post('/', (req, res) => res.send({title: 'CREATE new users'}));
 
