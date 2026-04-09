@@ -31,11 +31,11 @@ app.use('/api/v1/subscriptions', subscriptionRouter);
 app.use('/api/v1/workflows', workflowRouter);
 
 
-app.use(errorMiddleware) //This is a central “catcher” for every error. //It bubbles up to errorMiddleware, which sends a clean JSON error response.
-
 app.get('/', (req, res) => {
     res.send('welcome to the Subscription Tracker API!');
 });
+
+app.use(errorMiddleware); //This is a central “catcher” for every error. It must always be LAST.
 
 app.listen(PORT, async() => {
     console.log(`subscription Tracker API is running on http://localhost:${PORT}`);
